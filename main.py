@@ -1,17 +1,8 @@
-import tkinter as tk
-
-
-class Application(tk.Frame):
-    def __init__(self, master=None):
-        tk.Frame.__init__(self, master)
-        self.grid()
-        self.quit_button = tk.Button(self, text='Quit', command=self.quit)
-        self.quit_button.grid()
+from view.animation_editor import AnimationEditor
 
 
 def main():
-    app = Application()
-    app.master.title('Sample application')
+    app = AnimationEditor()
     app.mainloop()
 
 

@@ -1,0 +1,26 @@
+New animation
+Load animation
+**Save animation
+Autosave
+Export animation
+
+Add image
+Move image left/right/up/down
+Rotate image
+**Delete image
+
+Add frame
+Insert frame
+**********Delete frame
+
+Shift all frames
+Change frame length
+Change all frame lengths
+
+Undo?!?!?!
+
+Transparencies 
+X,Y positions shown
+Image catalog
+
+Preview animation
