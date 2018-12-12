@@ -31,7 +31,7 @@ class ImageList(tk.LabelFrame):
         self.scrollbar.pack(fill='both', expand=True, side='bottom')
         self.list_frame.pack(fill='both', expand=True, side='bottom')
 
-        self.grid(row=1, column=0, columnspan=2, sticky=tk.W+tk.E)
+        self.grid(row=1, column=0, sticky=tk.W+tk.E)
 
     def add(self):
         print('add')

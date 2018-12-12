@@ -2,7 +2,8 @@ import tkinter as tk
 
 from .frame_options import FrameOptions
 from .piece_settings import PieceSettings
-from .frame_list import FrameList
+from .batch_edits import BatchEdits
+from.interpolate import InterpolateControls
 
 
 class Controls(tk.Frame):
@@ -11,6 +12,7 @@ class Controls(tk.Frame):
 
         self.frame_options = FrameOptions(self)
         self.piece_settings = PieceSettings(self)
-        self.frame_list = FrameList(self)
+        self.batch_edits = BatchEdits(self)
+        self.interp_controls = InterpolateControls(self)
 
-        self.grid(column=1, row=0, sticky=tk.W+tk.E+tk.N+tk.S)
+        self.grid(column=1, row=0, rowspan=2, padx=4, sticky=tk.W+tk.E+tk.N+tk.S)

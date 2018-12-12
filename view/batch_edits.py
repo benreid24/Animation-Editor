@@ -1,20 +1,25 @@
 import tkinter as tk
 
 
-class PieceSettings(tk.LabelFrame):
+class BatchEdits(tk.LabelFrame):
     def __init__(self, master):
-        tk.LabelFrame.__init__(self, master, text='Image Options', padx=3, pady=3)
+        tk.LabelFrame.__init__(self, master, text='Batch Edit')
 
-        self.clone_but = tk.Button(self, text='Clone', command=self.clone)
-        self.delete_but = tk.Button(self, text='Delete', command=self.clone)
-        self.update_but = tk.Button(self, text='Update', command=self.apply, background='#ff5555')
-        self.upbut = tk.Button(self, text='Move up', command=self.moveup)
-        self.downbut = tk.Button(self, text='Move down', command=self.movedown)
-        self.clone_but.grid(row=0, column=0, pady=5)
-        self.delete_but.grid(row=0, column=1, pady=5)
-        self.update_but.grid(row=0, column=2, pady=5)
-        self.upbut.grid(row=0, column=3, pady=1)
-        self.downbut.grid(row=1, column=3, pady=1)
+        self.appply_but = tk.Button(self, text='Apply', command=self.apply, background='#ff5555')
+        self.appply_but.grid(row=0, column=2, padx=3)
+
+        self.change_type = tk.IntVar()
+        self.type_box = tk.Checkbutton(self, text='Percent Change', var=self.change_type)
+        self.type_box.grid(row=0, column=3, rowspan=1, pady=10)
+
+        self.fframe_label = tk.Label(self, text='First Frame:')
+        self.fframe_entry = tk.Entry(self)
+        self.fframe_label.grid(row=1, column=0)
+        self.fframe_entry.grid(row=1, column=1)
+        self.lframe_label = tk.Label(self, text='Last Frame:')
+        self.lframe_entry = tk.Entry(self)
+        self.lframe_label.grid(row=1, column=2)
+        self.lframe_entry.grid(row=1, column=3)
 
         self.xpos_label = tk.Label(self, text='X Pos:')
         self.xpos_entry = tk.Entry(self)
@@ -59,17 +64,7 @@ class PieceSettings(tk.LabelFrame):
         self.hcrop_label.grid(row=5, column=3)
         self.hcrop_entry.grid(row=6, column=3)
 
-        self.grid(row=1, column=0, columnspan=2)
-
-    def clone(self):
-        print('clone')
+        self.grid(row=2, column=0, columnspan=2, pady=20)
 
     def apply(self):
-        print('update')
-
-    def moveup(self):
-        print('move up')
-
-    def movedown(self):
-        print('move down')
-
+        print('apply')

@@ -24,3 +24,11 @@ X,Y positions shown
 Image catalog
 
 Preview animation
+
+
+change piece render order
+choose insertion/clone point of frames
+batch edit
+interpolate
+configurable background
+loop option?
