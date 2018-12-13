@@ -49,11 +49,27 @@ def update_piece(old_piece, new_piece):
     _reorder_canvas()
 
 
-def remove_piece():
-    if active_piece is not None:
+def remove_piece(piece_id = None):
+    if piece_id is not None:
+        for fid in model.pieces.keys():
+            model.remove_piece(fid, piece_id)
+        canvas_view.delete_piece(piece_id)
+        if active_piece == piece_id:
+            clear_active()
+
+    elif active_piece is not None:
         model.remove_piece(frames_model.active_frame(), active_piece)
         canvas_view.delete_piece(active_piece)
         clear_active()
+
+
+def get_pieces_using_image(image_id):
+    id_list = []
+    for k, piece_list in model.pieces.items():
+        for piece in piece_list:
+            if piece['image_id'] == image_id:
+                id_list.append(piece['id'])
+    return id_list
 
 
 def activate_piece(piece_id):

@@ -1,6 +1,8 @@
+import tkinter as tk
 from tkinter.filedialog import askopenfilename
 from PIL import Image
 
+from controller import pieces as pieces_controller
 from model import images as model
 from view import util
 
@@ -36,8 +38,15 @@ def import_image():
 
 
 def delete_image():
-    # TODO check pieces for reference first and confirm with util
     image_id = image_list_view.get_selected_image()
+    pieces = pieces_controller.get_pieces_using_image(image_id)
+    if len(pieces) > 0:
+        r = util.yesnobox('This image is used in the animation. Removing it will remove it from all frames. Delete it?')
+        if r == tk.YES:
+            for pid in pieces:
+                pieces_controller.remove_piece(pid)
+        else:
+            return
     image_list_view.remove_image(image_id)
     model.remove_image(image_id)
 
