@@ -122,6 +122,14 @@ def move_piece_down():
                     _reorder_canvas()
 
 
+def change_active_frame(old_frame, new_frame):
+    clear_active()
+    for p in model.pieces[old_frame]:
+        canvas_view.delete_piece(p['id'])
+    for p in model.pieces[new_frame]:
+        canvas_view.add_piece(p)
+
+
 def _reorder_canvas():
     for p in model.pieces[frames_model.active_frame()]:
         canvas_view.update_piece(p)

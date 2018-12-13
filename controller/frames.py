@@ -1,5 +1,6 @@
 from model import frames as model
 from model import pieces as pieces_model
+from controller import pieces as pieces_controller
 
 
 def new_frame_append():
@@ -26,7 +27,7 @@ def delete_frame():
 
 def move_frame_up():
     i = model.get_frame_position(model.active_frame())
-    ni = i -1
+    ni = i - 1
     if ni >= 0:
         temp = model.frames[ni]
         model.frames[ni] = model.frames[i]
@@ -43,9 +44,11 @@ def move_frame_down():
 
 
 def change_active_frame():
+    old = model.active_frame()
+    new_frame = 1
     # TODO Get new frame pos from view and update active frame
-    # TODO Update view with new pieces/etc
-    print('new active frame')
+    model._active_frame = new_frame
+    pieces_controller.change_active_frame(old, new_frame)
 
 
 def update_frame():
