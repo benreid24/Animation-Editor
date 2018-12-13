@@ -40,6 +40,8 @@ class MenuBar(tk.Menu):
         self.file_menu.add_command(label="New", command=self._create)
         self.file_menu.add_command(label="Open", command=self._open)
         self.file_menu.add_command(label="Save", command=self._save)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Preview", command=self._export)
         self.file_menu.add_command(label="Export", command=self._export)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=root.quit)
