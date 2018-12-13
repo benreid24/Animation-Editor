@@ -17,6 +17,8 @@ class AnimationEditor:
         self.controls = Controls(self.TK_ROOT)
         self.image_list = ImageList(self.TK_ROOT)
 
+        self.menu_bar.set_edtitor(self)
+
     def get_image_list(self):
         return self.image_list
 
