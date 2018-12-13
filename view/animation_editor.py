@@ -20,5 +20,11 @@ class AnimationEditor:
     def get_image_list(self):
         return self.image_list
 
+    def get_main_canvas(self):
+        return self.edit_canvas
+
+    def get_piece_controls(self):
+        return self.controls.piece_settings
+
     def mainloop(self):
         self.TK_ROOT.mainloop()

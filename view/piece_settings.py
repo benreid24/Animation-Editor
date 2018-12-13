@@ -1,15 +1,61 @@
 import tkinter as tk
 
+import view.util as util
+from controller import pieces as controller
+
 
 class PieceSettings(tk.LabelFrame):
+    def _apply(self):
+        x = self.xpos_entry.get()
+        y = self.ypos_entry.get()
+        xs = self.xscale_entry.get()
+        ys = self.yscale_entry.get()
+        r = self.rotation_scale.get()
+        xc = self.xcrop_entry.get()
+        yc = self.ycrop_entry.get()
+        wc = self.wcrop_entry.get()
+        hc = self.hcrop_entry.get()
+        t = self.trans_scale.get()
+
+        try:
+            x = float(x)
+            y = float(y)
+            xs = float(xs)/100
+            ys = float(ys)/100
+            xc = float(xc)/100
+            yc = float(yc)/100
+            wc = float(wc)/100
+            hc = float(hc)/100
+        except:
+            util.error('Input must be numerical')
+            return
+
+        if x < 0 or y < 0 or xs <= 0 or ys <= 0 or xc < 0 or yc < 0 or wc < 0 or hc < 0:
+            util.error('Input must be positive')
+            return
+
+        old = dict(self.piece)
+        self.piece['x'] = x
+        self.piece['y'] = y
+        self.piece['x_scale'] = xs
+        self.piece['y_scale'] = ys
+        self.piece['rotation'] = r
+        self.piece['alpha'] = t
+        self.piece['top_crop'] = yc
+        self.piece['right_crop'] = wc
+        self.piece['bottom_crop'] = hc
+        self.piece['left_crop'] = xc
+        controller.update_piece(old, self.piece)
+
     def __init__(self, master):
         tk.LabelFrame.__init__(self, master, text='Image Options', padx=3, pady=3)
+        self.piece = None
 
-        self.clone_but = tk.Button(self, text='Clone', command=self.clone)
-        self.delete_but = tk.Button(self, text='Delete', command=self.clone)
-        self.update_but = tk.Button(self, text='Update', command=self.apply, background='#ff5555')
-        self.upbut = tk.Button(self, text='Move up', command=self.moveup)
-        self.downbut = tk.Button(self, text='Move down', command=self.movedown)
+        self.clone_but = tk.Button(self, text='Clone', command=controller.add_from_piece)
+        self.delete_but = tk.Button(self, text='Delete', command=controller.remove_piece)
+        self.update_but = tk.Button(self, text='Update', command=self._apply, background='#ff5555')
+        self.upbut = tk.Button(self, text='Move up', command=controller.move_piece_up)
+        self.downbut = tk.Button(self, text='Move down', command=controller.move_piece_down)
         self.clone_but.grid(row=0, column=0, pady=5)
         self.delete_but.grid(row=0, column=1, pady=5)
         self.update_but.grid(row=0, column=2, pady=5)
@@ -61,15 +107,27 @@ class PieceSettings(tk.LabelFrame):
 
         self.grid(row=1, column=0, columnspan=2)
 
-    def clone(self):
-        print('clone')
+    def update_piece(self, piece):
+        self.piece = piece
+        self.clear()
 
-    def apply(self):
-        print('update')
+        self.xpos_entry.insert(0, str(piece['x']))
+        self.ypos_entry.insert(0, str(piece['y']))
+        self.xscale_entry.insert(0, str(piece['x_scale']*100))
+        self.yscale_entry.insert(0, str(piece['y_scale']*100))
+        self.xcrop_entry.insert(0, str(piece['left_crop']*100))
+        self.ycrop_entry.insert(0, str(piece['top_crop']*100))
+        self.wcrop_entry.insert(0, str(piece['right_crop']*100))
+        self.hcrop_entry.insert(0, str(piece['bottom_crop']*100))
+        self.rotation_scale.set(piece['rotation'])
+        self.trans_scale.set(piece['alpha'])
 
-    def moveup(self):
-        print('move up')
-
-    def movedown(self):
-        print('move down')
-
+    def clear(self):
+        self.xpos_entry.delete(0, tk.END)
+        self.ypos_entry.delete(0, tk.END)
+        self.xscale_entry.delete(0, tk.END)
+        self.yscale_entry.delete(0, tk.END)
+        self.xcrop_entry.delete(0, tk.END)
+        self.ycrop_entry.delete(0, tk.END)
+        self.wcrop_entry.delete(0, tk.END)
+        self.hcrop_entry.delete(0, tk.END)

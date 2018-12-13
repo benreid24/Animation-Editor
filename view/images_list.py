@@ -2,6 +2,7 @@ import tkinter as tk
 from PIL import ImageTk
 
 from controller import images as controller
+from controller import pieces as pieces_controller
 
 
 class ImageList(tk.LabelFrame):
@@ -20,7 +21,7 @@ class ImageList(tk.LabelFrame):
         tk.LabelFrame.__init__(self, master, text='Images', height=250)
 
         self.button_frame = tk.Frame(self)
-        self.add_but = tk.Button(self.button_frame, text='Add to Frame', command=self.add)
+        self.add_but = tk.Button(self.button_frame, text='Add to Frame', command=pieces_controller.add_from_image)
         self.import_but = tk.Button(self.button_frame, text='Import', command=controller.import_image, background='#ff5555')
         self.delete_but = tk.Button(self.button_frame, text='Delete', command=controller.delete_image)
         self.vert_but = tk.Button(self.button_frame, text='Clone via Vertical Flip', command=controller.clone_vertical)
@@ -46,12 +47,6 @@ class ImageList(tk.LabelFrame):
         self.list_frame.pack(fill='both', expand=True, side='bottom')
 
         self.grid(row=1, column=0, sticky=tk.W+tk.E)
-
-    def add(self):
-        print('add')
-
-    def vert_clone(self):
-        print('vert')
 
     def get_selected_image(self):
         return self.selected_image.get()
