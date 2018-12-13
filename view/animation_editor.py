@@ -17,5 +17,8 @@ class AnimationEditor:
         self.controls = Controls(self.TK_ROOT)
         self.image_list = ImageList(self.TK_ROOT)
 
+    def get_image_list(self):
+        return self.image_list
+
     def mainloop(self):
         self.TK_ROOT.mainloop()
