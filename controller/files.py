@@ -1,11 +1,17 @@
 import os
+import json
 
 import tkinter as tk
+from PIL import Image
 
 from controller import pieces as pieces_controller
 from controller import images as images_controller
 from controller import frames as frames_controller
 from controller import actions as actions_controller
+from model import pieces as pieces_model
+from model import frames as frames_model
+from model import images as images_model
+from model import actions as actions_model
 from view import util as view_util
 
 current_file = None
@@ -41,7 +47,7 @@ def open_anim():
         pieces_controller.reset()
         frames_controller.reset()
         actions_controller.reset()
-        # TODO load
+        _load(file)
 
 
 def save():
@@ -52,7 +58,7 @@ def save():
 
     if current_file is not None:
         actions_controller.save_action()
-        # TODO save
+        _save(current_file)
 
 
 def save_as():
@@ -61,4 +67,49 @@ def save_as():
     current_file = view_util.get_save_devanim_file()
     if current_file is not None:
         actions_controller.save_action()
-        # TODO save
+        _save(current_file)
+
+
+def _images_folder_name(file):
+    base = os.path.basename(file)
+    base = os.path.splitext(base)[0]
+    folder = os.path.dirname(file)
+    return os.path.join(folder, base + '_imgs')
+
+
+def _save(file):
+    data = {
+        'actions': actions_model.get_as_json(),
+        'images': images_model.get_as_json(),
+        'pieces': pieces_model.get_as_json(),
+        'frames': frames_model.get_as_json()
+    }
+    with open(file, 'w') as of:
+        of.write(json.dumps(data, indent=4))
+
+        folder = _images_folder_name(file)
+        if not os.path.exists(folder):
+            os.makedirs(folder)
+        for k, img in images_model.image_list.items():
+            img_file = os.path.join(folder, img['file'])
+            img['img'].save(img_file)
+
+
+def _load(file):
+    with open(file, 'r') as ifs:
+        data = json.load(ifs)
+        actions_model.restore_from_loaded_json(data['actions'])
+        frames_model.restore_from_loaded_json(data['frames'])
+        pieces_model.restore_from_loaded_json(data['pieces'])
+        images_model.restore_from_loaded_json(data['images'])
+
+        folder = _images_folder_name(file)
+        for k, img in images_model.image_list.items():
+            img['img'] = Image.open(os.path.join(folder, img['file']))
+        for k, pl in pieces_model.pieces.items():
+            for piece in pl:
+                piece['img'] = images_model.get_image(piece['image_id'])
+
+        frames_controller.update_view()
+        pieces_controller.update_view()
+        images_controller.update_view()

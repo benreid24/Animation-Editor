@@ -1,3 +1,4 @@
+import json
 
 _active_frame = 1
 next_id = 2
@@ -7,6 +8,26 @@ frames = [
         'length': 50
     }
 ]
+
+
+def get_as_json():
+    return json.dumps(
+        {
+            'next_id': next_id,
+            'frames': frames
+        }
+    )
+
+
+def restore_from_loaded_json(data):
+    global next_id
+    global frames
+    global _active_frame
+
+    data = json.loads(data)
+    next_id = data['next_id']
+    frames = data['frames']
+    _active_frame = frames[0]['id']
 
 
 def init():

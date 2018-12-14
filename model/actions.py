@@ -1,3 +1,5 @@
+import json
+
 current_action = None
 actions = []
 
@@ -25,3 +27,22 @@ VALID_TYPES = [
     'delete_frame',
     'update_frame'
 ]
+
+
+def get_as_json():
+    global current_action
+
+    def blank(obj):
+        return 'unserializable'
+
+    if current_action is not None:
+        return json.dumps(actions[:current_action+1], default=blank)
+    return '[]'
+
+
+def restore_from_loaded_json(data):
+    global current_action
+    global actions
+
+    actions = json.loads(data)
+    current_action = len(actions)-1

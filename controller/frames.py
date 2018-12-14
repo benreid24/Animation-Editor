@@ -18,10 +18,10 @@ def init(main_view):
 def reset():
     model.init()
     view_options.set_length(model.frames[0]['length'])
-    _update_view()
+    update_view()
 
 
-def _update_view():
+def update_view():
     i = model.get_frame_position(model.active_frame())
     length = model.get_frame_from_pos(i)['length']
     view_options.set_frame_count(len(model.frames))
@@ -32,7 +32,7 @@ def _update_view():
 def new_frame_append():
     frame = model.get_new_frame()
     model.frames.append(frame)
-    _update_view()
+    update_view()
     actions_controller.add_frame_action(frame, len(model.frames)-1, {})
 
 
@@ -40,7 +40,7 @@ def new_frame_insert():
     i = model.get_frame_position(model.active_frame())
     frame = model.get_new_frame()
     model.frames.insert(i, frame)
-    _update_view()
+    update_view()
     actions_controller.add_frame_action(frame, i, {})
 
 
@@ -52,7 +52,7 @@ def clone_frame():
     model.frames.insert(i+1, frame)
     if model.active_frame() in pieces_model.pieces.keys():
         pieces_model.pieces[frame['id']] = [dict(p) for p in pieces_model.pieces[model.active_frame()]]
-    _update_view()
+    update_view()
     actions_controller.add_frame_action(frame, i+1, pieces_model.pieces[frame['id']])
 
 
@@ -72,7 +72,7 @@ def delete_frame():
         if frame['id'] in pieces_model.pieces.keys():
             del pieces_model.pieces[frame['id']]
 
-        _update_view()
+        update_view()
 
     else:
         util.error('You need to have at least one frame, jackass')
@@ -86,7 +86,7 @@ def move_frame_up():
         temp = model.frames[ni]
         model.frames[ni] = model.frames[i]
         model.frames[i] = temp
-        _update_view()
+        update_view()
 
 
 def move_frame_down():
@@ -97,14 +97,14 @@ def move_frame_down():
         temp = model.frames[ni]
         model.frames[ni] = model.frames[i]
         model.frames[i] = temp
-        _update_view()
+        update_view()
 
 
 def change_active_frame():
     old = model.active_frame()
     model._active_frame = model.get_frame_from_pos(view_options.get_selected_index())['id']
     pieces_controller.change_active_frame(old, model.active_frame())
-    _update_view()
+    update_view()
 
 
 def update_frame():

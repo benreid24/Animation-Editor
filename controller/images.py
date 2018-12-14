@@ -23,6 +23,12 @@ def reset():
     model.clear()
 
 
+def update_view():
+    image_list_view.clear()
+    for image_id, img in model.image_list.items():
+        image_list_view.add_image(image_id, img['img'])
+
+
 def import_image():
     global main_view
     global image_list_view

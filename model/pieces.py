@@ -1,3 +1,5 @@
+import json
+
 # id is only unique per frame
 next_id = 1
 
@@ -22,6 +24,28 @@ piece_template = {
 
 # frame_id -> list[pieces]. Piece order determines rendering order
 pieces = {}
+
+
+def get_as_json():
+    def blank(obj):
+        return 'unserializable'
+    return json.dumps(
+        {
+            'next_id': next_id,
+            'pieces': pieces
+        },
+        default=blank
+    )
+
+
+def restore_from_loaded_json(data):
+    global next_id
+    global pieces
+
+    data = json.loads(data)
+    next_id = data['next_id']
+    pieces = data['pieces']
+    pieces = {int(k): v for k, v in pieces.items()}
 
 
 def add_from_image(image_id, img, frame_id):

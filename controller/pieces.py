@@ -30,6 +30,14 @@ def reset():
     model.next_id = 1
 
 
+def update_view():
+    clear_active()
+    canvas_view.clear()
+    if frames_model.active_frame() in model.pieces.keys():
+        for piece in model.pieces[frames_model.active_frame()]:
+            canvas_view.add_piece(piece)
+
+
 def add_from_image():
     image_id = images_view.get_selected_image()
     img = images_model.get_image(image_id)
