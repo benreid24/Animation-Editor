@@ -1,6 +1,7 @@
 from model import pieces as model
 from model import images as images_model
 from model import frames as frames_model
+from controller import actions as actions_controller
 
 images_view = None
 pieces_view = None
@@ -20,12 +21,22 @@ def init(main_view):
     active_piece = None
 
 
+def reset():
+    global active_piece
+
+    clear_active()
+    canvas_view.clear()
+    model.pieces = {}
+    model.next_id = 1
+
+
 def add_from_image():
     image_id = images_view.get_selected_image()
     img = images_model.get_image(image_id)
     piece_id = model.add_from_image(image_id, img, frames_model.active_frame())
     piece = model.get_piece(frames_model.active_frame(), piece_id)
     canvas_view.add_piece(piece)
+    actions_controller.add_piece_action(frames_model.active_frame(), piece)
 
 
 def add_from_piece():
@@ -38,10 +49,11 @@ def add_from_piece():
             pid = model.add_from_piece(frames_model.active_frame(), piece)
             piece = model.get_piece(frames_model.active_frame(), pid)
             canvas_view.add_piece(piece)
+            actions_controller.add_piece_action(frames_model.active_frame(), piece)
 
 
 def update_piece(old_piece, new_piece):
-    # TODO action for undo
+    actions_controller.update_piece_action(frames_model.active_frame(), old_piece, new_piece)
     fid = frames_model.active_frame()
     model.update_piece(fid, new_piece)
     canvas_view.update_piece(new_piece)
@@ -49,15 +61,21 @@ def update_piece(old_piece, new_piece):
     _reorder_canvas()
 
 
-def remove_piece(piece_id = None):
+def remove_piece(piece_id=None):
     if piece_id is not None:
         for fid in model.pieces.keys():
+            piece = model.get_piece(fid, piece_id)
+            if piece is not None:
+                actions_controller.delete_piece_action(fid, piece)
             model.remove_piece(fid, piece_id)
         canvas_view.delete_piece(piece_id)
         if active_piece == piece_id:
             clear_active()
 
     elif active_piece is not None:
+        piece = model.get_piece(frames_model.active_frame(), piece_id)
+        if piece is not None:
+            actions_controller.delete_piece_action(frames_model.active_frame(), piece)
         model.remove_piece(frames_model.active_frame(), active_piece)
         canvas_view.delete_piece(active_piece)
         clear_active()
@@ -101,6 +119,7 @@ def move_piece_up():
                     temp = model.pieces[fid][index]
                     model.pieces[fid][index] = model.pieces[fid][ni]
                     model.pieces[fid][ni] = temp
+                    actions_controller.move_piece_action(frames_model.active_frame(), active_piece, 1)
                     _reorder_canvas()
 
 
@@ -119,6 +138,7 @@ def move_piece_down():
                     temp = model.pieces[fid][index]
                     model.pieces[fid][index] = model.pieces[fid][ni]
                     model.pieces[fid][ni] = temp
+                    actions_controller.move_piece_action(frames_model.active_frame(), active_piece, -1)
                     _reorder_canvas()
 
 

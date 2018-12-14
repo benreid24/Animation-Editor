@@ -73,7 +73,7 @@ class ImageList(tk.LabelFrame):
         self._repack()
 
     def clear(self):
-        for k, v in self.but_ids:
+        for k, v in self.but_ids.items():
             self.images_list.delete(v)
         self.but_ids = {}
         self.tk_images = {}

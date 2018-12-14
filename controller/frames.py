@@ -1,6 +1,7 @@
 from model import frames as model
 from model import pieces as pieces_model
 from controller import pieces as pieces_controller
+from controller import actions as actions_controller
 from view import util
 
 view_options = None
@@ -14,6 +15,12 @@ def init(main_view):
     model.init()
 
 
+def reset():
+    model.init()
+    view_options.set_length(model.frames[0]['length'])
+    _update_view()
+
+
 def _update_view():
     i = model.get_frame_position(model.active_frame())
     length = model.get_frame_from_pos(i)['length']
@@ -23,14 +30,18 @@ def _update_view():
 
 
 def new_frame_append():
-    model.frames.append(model.get_new_frame())
+    frame = model.get_new_frame()
+    model.frames.append(frame)
     _update_view()
+    actions_controller.add_frame_action(frame, len(model.frames)-1, {})
 
 
 def new_frame_insert():
     i = model.get_frame_position(model.active_frame())
-    model.frames.insert(i, model.get_new_frame())
+    frame = model.get_new_frame()
+    model.frames.insert(i, frame)
     _update_view()
+    actions_controller.add_frame_action(frame, i, {})
 
 
 def clone_frame():
@@ -42,12 +53,14 @@ def clone_frame():
     if model.active_frame() in pieces_model.pieces.keys():
         pieces_model.pieces[frame['id']] = [dict(p) for p in pieces_model.pieces[model.active_frame()]]
     _update_view()
+    actions_controller.add_frame_action(frame, i+1, pieces_model.pieces[frame['id']])
 
 
 def delete_frame():
     if len(model.frames) > 1:
         i = model.get_frame_position(model.active_frame())
         frame = model.get_frame(model.active_frame())
+        actions_controller.delete_frame_action(frame, i, pieces_model.pieces[frame['id']])
 
         ni = i + 1
         if ni >= len(model.frames):
@@ -69,6 +82,7 @@ def move_frame_up():
     i = model.get_frame_position(model.active_frame())
     ni = i - 1
     if ni >= 0:
+        actions_controller.move_frame_action(model.get_frame_from_pos(i)['id'], -1)
         temp = model.frames[ni]
         model.frames[ni] = model.frames[i]
         model.frames[i] = temp
@@ -79,6 +93,7 @@ def move_frame_down():
     i = model.get_frame_position(model.active_frame())
     ni = i + 1
     if ni < len(model.frames):
+        actions_controller.move_frame_action(model.get_frame_from_pos(i)['id'], 1)
         temp = model.frames[ni]
         model.frames[ni] = model.frames[i]
         model.frames[i] = temp
@@ -103,4 +118,5 @@ def update_frame():
         util.error('Frame length <= 0 ?!')
         return
     i = model.get_frame_position(model.active_frame())
+    actions_controller.update_frame_action(model.active_frame(), model.frames[i]['length'], new_len)
     model.frames[i]['length'] = new_len

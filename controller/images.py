@@ -1,8 +1,8 @@
 import tkinter as tk
-from tkinter.filedialog import askopenfilename
 from PIL import Image
 
 from controller import pieces as pieces_controller
+from controller import actions as actions_controller
 from model import images as model
 from view import util
 
@@ -18,15 +18,16 @@ def init(anim_editor):
     image_list_view = main_view.get_image_list()
 
 
+def reset():
+    image_list_view.clear()
+    model.clear()
+
+
 def import_image():
     global main_view
     global image_list_view
 
-    filename = askopenfilename(
-        filetypes=[
-            ('Images', '*.jpg *.png')
-        ]
-    )
+    filename = util.get_image_file()
     if filename:
         try:
             img = Image.open(filename)
@@ -35,20 +36,28 @@ def import_image():
             return
         image_id = model.add_image(img, filename)
         image_list_view.add_image(image_id, img)
+        actions_controller.add_image_action(image_id)
 
 
 def delete_image():
     image_id = image_list_view.get_selected_image()
     pieces = pieces_controller.get_pieces_using_image(image_id)
     if len(pieces) > 0:
-        r = util.yesnobox('This image is used in the animation. Removing it will remove it from all frames. Delete it?')
+        r = util.yesnobox(
+            'This image is used in the animation\n'
+            'Removing it will remove it from all frames\n'
+            'THIS CANNOT BE UNDONE!\n'
+            'Delete it?'
+        )
         if r == tk.YES:
+            actions_controller.reset()  # Actions are invalidated
             for pid in pieces:
                 pieces_controller.remove_piece(pid)
         else:
             return
     image_list_view.remove_image(image_id)
     model.remove_image(image_id)
+    actions_controller.delete_image_action()
 
 
 def clone_horizontal():
@@ -59,6 +68,7 @@ def clone_horizontal():
         file = 'image_{}_flipped_h.png'.format(image_id)
         new_id = model.add_image(img, file)
         image_list_view.add_image(new_id, img)
+        actions_controller.add_image_action(new_id)
 
 
 def clone_vertical():
@@ -69,3 +79,4 @@ def clone_vertical():
         file = 'image_{}_flipped_v.png'.format(image_id)
         new_id = model.add_image(img, file)
         image_list_view.add_image(new_id, img)
+        actions_controller.add_image_action(new_id)

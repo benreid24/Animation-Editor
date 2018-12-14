@@ -1,10 +1,9 @@
 import tkinter as tk
 
+from controller import files as controller
+
 
 class MenuBar(tk.Menu):
-    def _create(self):
-        print('create')
-
     def _open(self):
         print('Open')
 
@@ -37,9 +36,10 @@ class MenuBar(tk.Menu):
         self.editor = None
 
         self.file_menu = tk.Menu(self, tearoff=0)
-        self.file_menu.add_command(label="New", command=self._create)
-        self.file_menu.add_command(label="Open", command=self._open)
-        self.file_menu.add_command(label="Save", command=self._save)
+        self.file_menu.add_command(label="New", command=controller.new_anim)
+        self.file_menu.add_command(label="Open", command=controller.open_anim)
+        self.file_menu.add_command(label="Save", command=controller.save)
+        self.file_menu.add_command(label="Save as", command=controller.save_as)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Preview", command=self._export)
         self.file_menu.add_command(label="Export", command=self._export)

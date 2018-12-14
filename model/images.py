@@ -16,7 +16,7 @@ def clear():
     global image_list
 
     next_id = 1
-    image_list = []
+    image_list = {}
 
 
 def add_image(img, file):
