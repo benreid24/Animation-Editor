@@ -1,6 +1,7 @@
 from view.animation_editor import AnimationEditor
 from controller import images as images_controller
 from controller import pieces as pieces_controller
+from controller import frames as frames_controller
 
 
 def main():
@@ -8,6 +9,7 @@ def main():
 
     images_controller.init(app)
     pieces_controller.init(app)
+    frames_controller.init(app)
 
     app.mainloop()
 

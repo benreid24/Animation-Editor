@@ -4,14 +4,9 @@ next_id = 2
 frames = [
     {
         'id': 1,
-        'length': 100
+        'length': 50
     }
 ]
-
-frame_template = {
-    'id': next_id,
-    'length': 50
-}
 
 
 def init():

@@ -28,5 +28,8 @@ class AnimationEditor:
     def get_piece_controls(self):
         return self.controls.piece_settings
 
+    def get_frame_controls(self):
+        return self.controls.frame_options
+
     def mainloop(self):
         self.TK_ROOT.mainloop()
