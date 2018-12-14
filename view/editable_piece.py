@@ -1,5 +1,5 @@
 import tkinter as tk
-from PIL import ImageTk
+from PIL import ImageTk, Image
 
 from controller import pieces as controller
 
@@ -57,7 +57,9 @@ class EditablePiece:
              int(self.transformed_image.size[1]*self.piece['y_scale']))
         )
         self.transformed_image = self.transformed_image.rotate(self.piece['rotation'], expand=True)
-        # TODO transparency
+        temp_img = self.transformed_image.copy()
+        temp_img.putalpha(0)
+        self.transformed_image = Image.blend(self.transformed_image, temp_img, 1-self.piece['alpha']/256)
         self.img = ImageTk.PhotoImage(self.transformed_image)
         self.image_id = self.canvas.create_image(
             self.piece['x'],
