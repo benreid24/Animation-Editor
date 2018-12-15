@@ -44,7 +44,7 @@ class FrameOptions(tk.LabelFrame):
         self.frame_list_frame = tk.LabelFrame(self, text='Frames')
         self.scrollbar = tk.Scrollbar(self.frame_list_frame)
 
-        self.frame_list = tk.Listbox(self.frame_list_frame, yscrollcommand=self.scrollbar.set)
+        self.frame_list = tk.Listbox(self.frame_list_frame, yscrollcommand=self.scrollbar.set, exportselection=False)
         self.frame_list.insert(tk.END, '1')
         self.frame_list.select_set(0)
         self.frame_list.pack(side=tk.LEFT, fill=tk.BOTH)

@@ -2,12 +2,15 @@ from model import actions as model
 from .helpers import actions as helper
 
 menu_view = None
+actions_view = None
 
 
 def init(main_view):
     global menu_view
+    global actions_view
 
     menu_view = main_view.get_menu()
+    actions_view = main_view.get_actions_panel()
 
 
 def undo():
@@ -18,6 +21,19 @@ def redo():
     helper.redo()
 
 
+def set_action_index(i):
+    if model.current_action > i:
+        while model.current_action != i:
+            undo()
+    elif model.current_action < i:
+        while model.current_action < i:
+            redo()
+
+
+def get_action_index():
+    return model.current_action
+
+
 def update_view():
     if model.current_action is not None and model.current_action in range(0, len(model.actions)):
         menu_view.set_undo_action(model.actions[model.current_action]['type'])
@@ -25,9 +41,14 @@ def update_view():
             menu_view.set_redo_action(model.actions[model.current_action+1]['type'])
         else:
             menu_view.set_redo_action('')
+
+        al = [a['type'] for a in model.actions]
+        actions_view.set_action_list(al)
+        actions_view.set_active(model.current_action)
     else:
         menu_view.set_undo_action('')
         menu_view.set_redo_action('')
+        actions_view.clear()
 
 
 def add_action(action):

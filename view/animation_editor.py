@@ -34,5 +34,8 @@ class AnimationEditor:
     def get_menu(self):
         return self.menu_bar
 
+    def get_actions_panel(self):
+        return self.controls.actions
+
     def mainloop(self):
         self.TK_ROOT.mainloop()
