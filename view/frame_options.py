@@ -4,11 +4,12 @@ from controller import frames as controller
 
 
 class FrameOptions(tk.LabelFrame):
-    def _clicked(self, event):
-        self.frame_list.select_clear(0, tk.END)
-        i = self.frame_list.nearest(event.y)
-        self.frame_list.select_set(i)
-        controller.change_active_frame()
+    def _check(self):
+        sel = int(self.frame_list.curselection()[0])
+        if sel != self.last_selection:
+            self.last_selection = sel
+            controller.change_active_frame()
+        self.after(100, self._check)
 
     def _entry_updated(self, _1, _2, _3):
         if len(self.time_val.get()) > 0:
@@ -44,7 +45,9 @@ class FrameOptions(tk.LabelFrame):
         self.frame_list.insert(tk.END, '1')
         self.frame_list.select_set(0)
         self.frame_list.pack(side=tk.LEFT, fill=tk.BOTH)
-        self.frame_list.bind('<Button-1>', self._clicked)
+
+        self.after(100, self._check)
+        self.last_selection = 0
 
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.scrollbar.config(command=self.frame_list.yview)
@@ -62,6 +65,7 @@ class FrameOptions(tk.LabelFrame):
     def set_active(self, i):
         self.frame_list.selection_clear(0, tk.END)
         self.frame_list.select_set(i)
+        self.last_selection = i
 
     def get_selected_index(self):
         selected = self.frame_list.curselection()
@@ -72,6 +76,7 @@ class FrameOptions(tk.LabelFrame):
         self.frame_list.insert(tk.END, '1')
         self.frame_list.select_set(0)
         self.time_val.set('50')
+        self.last_selection = 0
 
     def get_length_str(self):
         return self.time_val.get()
