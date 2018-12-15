@@ -117,7 +117,7 @@ def _load(file):
 
         folder = _images_folder_name(file)
         for k, img in images_model.image_list.items():
-            img['img'] = Image.open(os.path.join(folder, img['file']))
+            img['img'] = Image.open(os.path.join(folder, img['file'])).convert(mode='RGBA')
         for k, pl in pieces_model.pieces.items():
             for piece in pl:
                 piece['img'] = images_model.get_image(piece['image_id'])

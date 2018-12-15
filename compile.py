@@ -10,7 +10,7 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
 
-executables = [Executable("main.py", base=base)] #, targetName='Animation Editor')]
+executables = [Executable("main.py", base=base, targetName='AnimationEditor.exe')]
 
 packages = ["idna"]
 options = {
