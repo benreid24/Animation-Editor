@@ -8,6 +8,7 @@ from controller import pieces as pieces_controller
 from controller import images as images_controller
 from controller import frames as frames_controller
 from controller import actions as actions_controller
+from .helpers import export as export_helper
 from model import pieces as pieces_model
 from model import frames as frames_model
 from model import images as images_model
@@ -20,7 +21,7 @@ current_file = None
 def new_anim():
     global current_file
 
-    if actions_controller.dirty_state():
+    if actions_controller.dirty_state() and len(frames_model.frames) > 1:
         c = view_util.yesnobox('Discard unsaved changes?')
         if c == tk.NO:
             return
@@ -35,7 +36,7 @@ def new_anim():
 def open_anim():
     global current_file
 
-    if actions_controller.dirty_state():
+    if actions_controller.dirty_state() and len(frames_model.frames) > 1:
         c = view_util.yesnobox('Discard unsaved changes?')
         if c == tk.NO:
             return
@@ -68,6 +69,17 @@ def save_as():
     if current_file is not None:
         actions_controller.save_action()
         _save(current_file)
+
+
+def export(file=None):
+    if file is None:
+        file = view_util.get_export_file()
+
+    if file:
+        base = os.path.basename(file)
+        base = os.path.splitext(base)[0]
+        folder = os.path.dirname(file)
+        export_helper.save_anim(folder, base, frames_model.frames, pieces_model.pieces, images_model.image_list)
 
 
 def _images_folder_name(file):

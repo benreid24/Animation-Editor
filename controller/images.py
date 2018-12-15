@@ -36,7 +36,7 @@ def import_image():
     filename = util.get_image_file()
     if filename:
         try:
-            img = Image.open(filename)
+            img = Image.open(filename).convert(mode='RGBA')
         except:
             util.error('Failed to open image: ' + filename)
             return

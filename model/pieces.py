@@ -11,7 +11,7 @@ piece_template = {
     'x': 300,
     'y': 280,
     'rotation': 0,
-    'alpha': 256,
+    'alpha': 255,
 
     'x_scale': 1,
     'y_scale': 1,

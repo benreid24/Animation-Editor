@@ -4,15 +4,6 @@ from controller import files as controller
 
 
 class MenuBar(tk.Menu):
-    def _open(self):
-        print('Open')
-
-    def _save(self):
-        print('save')
-
-    def _export(self):
-        print('export')
-
     def _undo(self):
         print('undo')
 
@@ -41,8 +32,8 @@ class MenuBar(tk.Menu):
         self.file_menu.add_command(label="Save", command=controller.save)
         self.file_menu.add_command(label="Save as", command=controller.save_as)
         self.file_menu.add_separator()
-        self.file_menu.add_command(label="Preview", command=self._export)
-        self.file_menu.add_command(label="Export", command=self._export)
+        self.file_menu.add_command(label="Preview", command=controller.export)
+        self.file_menu.add_command(label="Export", command=controller.export)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=root.quit)
         self.add_cascade(label="File", menu=self.file_menu)

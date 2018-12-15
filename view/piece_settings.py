@@ -83,7 +83,7 @@ class PieceSettings(tk.LabelFrame):
         self.rotation_scale = tk.Scale(self, from_=0, to=360, resolution=1, orient=tk.HORIZONTAL, label='Rotation')
         self.rotation_scale.set(0)
         self.rotation_scale.grid(row=4, column=0, columnspan=2)
-        self.trans_scale = tk.Scale(self, from_=0, to=256, resolution=1, orient=tk.HORIZONTAL, label='Opacity')
+        self.trans_scale = tk.Scale(self, from_=0, to=255, resolution=1, orient=tk.HORIZONTAL, label='Opacity')
         self.trans_scale.set(256)
         self.trans_scale.grid(row=4, column=2, columnspan=2)
 

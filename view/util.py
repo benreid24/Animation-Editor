@@ -37,3 +37,11 @@ def get_save_devanim_file():
         defaultextension='.danim',
         filetypes=[('DevAnims', '*.danim')]
     )
+
+
+def get_export_file():
+    return asksaveasfilename(
+        title='Export Animation',
+        defaultextension='.anim',
+        filetypes=[('Animations', '*.anim')]
+    )
