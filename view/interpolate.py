@@ -8,7 +8,7 @@ class InterpolateControls(tk.LabelFrame):
         try:
             total_time = int(self.time.get())
             frame_len = int(self.frame_len.get())
-            frame = int(self.frame.get())
+            frame = int(self.frame.get()) - 1
         except:
             util.error('Input must be integers')
             return

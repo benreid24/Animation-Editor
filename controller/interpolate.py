@@ -35,7 +35,7 @@ def apply(frame, total_time, frame_len):
         )
         return
 
-    fc = int(total_time/frame_len+0.999)
+    fc = int(total_time/frame_len+0.999)-1
     res = view_util.yesnobox('This will create {} frames. Continue?'.format(fc))
     if res == tk.YES:
         actions_controller.interpolate_action(start_fid, end_fid, total_time, frame_len)
@@ -50,10 +50,10 @@ def interpolate(frame, total_time, frame_len):
     fc = int(total_time / frame_len + 0.999)
     frame_len = int(total_time/fc+0.5)
 
-    for fi in range(0, fc):
+    for fi in range(0, fc-1):
         pieces = []
         for i in range(0, len(start_pieces)):
-            d = fi/fc
+            d = (fi+1)/fc
             piece = dict(start_pieces[i])
             goal = end_pieces[i]
 
