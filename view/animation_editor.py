@@ -37,5 +37,8 @@ class AnimationEditor:
     def get_actions_panel(self):
         return self.controls.actions
 
+    def get_interpolation_controls(self):
+        return self.controls.interp_controls
+
     def mainloop(self):
         self.TK_ROOT.mainloop()

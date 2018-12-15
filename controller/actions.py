@@ -68,6 +68,7 @@ def dirty_state():
 def reset():
     model.actions = []
     model.current_action = None
+    update_view()
 
 
 def add_image_action(image_id):
@@ -203,6 +204,19 @@ def batch_action(sframe, eframe, percent, xpos, ypos, xscale, yscale, alpha, rot
             'yscale': yscale,
             'alpha': alpha,
             'rot': rot
+        }
+    }
+    add_action(action)
+
+
+def interpolate_action(start_fid, end_fid, total_time, frame_len):
+    action = {
+        'type': 'interpolate',
+        'data': {
+            'start_frame': start_fid,
+            'end_frame': end_fid,
+            'total_time': total_time,
+            'frame_len': frame_len
         }
     }
     add_action(action)

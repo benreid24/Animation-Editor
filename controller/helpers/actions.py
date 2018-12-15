@@ -7,6 +7,7 @@ from controller import pieces as pieces_controller
 from controller import frames as frames_controller
 from controller import images as images_controller
 from controller import batch as batch_controller
+from controller import interpolate as interpolate_controller
 from view import util as view_util
 
 
@@ -94,6 +95,18 @@ def undo():
                 a = (-data['alpha']) / (100 + data['alpha']) * 100
                 r = (-data['rot']) / (100 + data['rot']) * 100
                 batch_controller.percent_shift(data['start_frame'], data['end_frame'], xs, ys, a, r)
+
+        elif action['type'] == 'interpolate':
+            s = frames_model.get_frame_position(data['start_frame'])+1
+            e = frames_model.get_frame_position(data['end_frame'])
+            fids = [frames_model.get_frame_from_pos(i)['id'] for i in range(s, e)]
+            for fid in fids:
+                i = frames_model.get_frame_position(fid)
+                if fid in pieces_model.pieces.keys():
+                    del pieces_model.pieces[fid]
+                del frames_model.frames[i]
+            frames_controller.update_view()
+            pieces_controller.update_view()
 
         model.current_action -= 1
         controller.update_view()
@@ -185,6 +198,12 @@ def redo():
                     data['alpha'],
                     data['rot']
                 )
+
+        elif action['type'] == 'interpolate':
+            i = frames_model.get_frame_position(data['start_frame'])
+            interpolate_controller.interpolate(i, data['total_time'], data['frame_len'])
+            pieces_controller.update_view()
+            frames_controller.update_view()
 
         model.current_action += 1
         controller.update_view()

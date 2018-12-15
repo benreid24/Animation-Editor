@@ -24,7 +24,7 @@ export_file = None
 def new_anim():
     global current_file
 
-    if actions_controller.dirty_state() and len(frames_model.frames) > 1:
+    if actions_controller.dirty_state():
         c = view_util.yesnobox('Discard unsaved changes?')
         if c == tk.NO:
             return
@@ -39,7 +39,7 @@ def new_anim():
 def open_anim():
     global current_file
 
-    if actions_controller.dirty_state() and len(frames_model.frames) > 1:
+    if actions_controller.dirty_state():
         c = view_util.yesnobox('Discard unsaved changes?')
         if c == tk.NO:
             return

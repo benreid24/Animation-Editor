@@ -7,9 +7,7 @@ from controller import files as files_controller
 class Actions(tk.LabelFrame):
     def _check(self):
         try:
-            print(self.action_list.curselection())
             sel = int(self.action_list.curselection()[0])
-            print(sel)
             if sel != self.last_selection:
                 self.last_selection = sel
                 controller.set_action_index(sel)
