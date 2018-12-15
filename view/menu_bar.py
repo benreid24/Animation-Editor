@@ -1,15 +1,10 @@
 import tkinter as tk
 
 from controller import files as controller
+from controller import actions as action_controller
 
 
 class MenuBar(tk.Menu):
-    def _undo(self):
-        print('undo')
-
-    def _redo(self):
-        print('redo')
-
     def _bgnd_blank(self):
         self.editor.edit_canvas.set_blank()
 
@@ -39,8 +34,8 @@ class MenuBar(tk.Menu):
         self.add_cascade(label="File", menu=self.file_menu)
 
         self.edit_menu = tk.Menu(self, tearoff=0)
-        self.edit_menu.add_command(label="Undo", command=self._undo)
-        self.edit_menu.add_command(label="Redo", command=self._redo)
+        self.edit_menu.add_command(label="Undo", command=action_controller.undo)
+        self.edit_menu.add_command(label="Redo", command=action_controller.redo)
         self.add_cascade(label="Edit", menu=self.edit_menu)
 
         self.bgnd_menu = tk.Menu(self, tearoff=0)
@@ -52,5 +47,11 @@ class MenuBar(tk.Menu):
 
         root.configure(menu=self)
 
-    def set_edtitor(self, e):
+    def set_editor(self, e):
         self.editor = e
+
+    def set_undo_action(self, action):
+        self.edit_menu.entryconfig(0, label='Undo ({})'.format(action))
+
+    def set_redo_action(self, action):
+        self.edit_menu.entryconfig(1, label='Redo ({})'.format(action))

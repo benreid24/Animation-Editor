@@ -148,3 +148,4 @@ def _load(file):
         frames_controller.update_view()
         pieces_controller.update_view()
         images_controller.update_view()
+        actions_controller.update_view()

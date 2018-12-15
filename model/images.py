@@ -72,4 +72,5 @@ def get_image(image_id):
 
 
 def remove_image(image_id):
-    del image_list[image_id]
+    if image_id in image_list.keys():
+        del image_list[image_id]

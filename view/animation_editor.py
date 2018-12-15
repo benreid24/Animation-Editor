@@ -17,7 +17,7 @@ class AnimationEditor:
         self.controls = Controls(self.TK_ROOT)
         self.image_list = ImageList(self.TK_ROOT)
 
-        self.menu_bar.set_edtitor(self)
+        self.menu_bar.set_editor(self)
 
     def get_image_list(self):
         return self.image_list
@@ -30,6 +30,9 @@ class AnimationEditor:
 
     def get_frame_controls(self):
         return self.controls.frame_options
+
+    def get_menu(self):
+        return self.menu_bar
 
     def mainloop(self):
         self.TK_ROOT.mainloop()

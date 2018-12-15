@@ -23,6 +23,9 @@ def reset():
 
 def update_view():
     i = model.get_frame_position(model.active_frame())
+    if i is None:
+        i = 0
+        model._active_frame = model.frames[0]['id']
     length = model.get_frame_from_pos(i)['length']
     view_options.set_frame_count(len(model.frames))
     view_options.set_active(i)

@@ -1,4 +1,33 @@
 from model import actions as model
+from .helpers import actions as helper
+
+menu_view = None
+
+
+def init(main_view):
+    global menu_view
+
+    menu_view = main_view.get_menu()
+
+
+def undo():
+    helper.undo()
+
+
+def redo():
+    helper.redo()
+
+
+def update_view():
+    if model.current_action is not None and model.current_action in range(0, len(model.actions)):
+        menu_view.set_undo_action(model.actions[model.current_action]['type'])
+        if model.current_action+1 in range(0, len(model.actions)):
+            menu_view.set_redo_action(model.actions[model.current_action+1]['type'])
+        else:
+            menu_view.set_redo_action('')
+    else:
+        menu_view.set_undo_action('')
+        menu_view.set_redo_action('')
 
 
 def add_action(action):
@@ -6,6 +35,7 @@ def add_action(action):
         model.actions = model.actions[:model.current_action+1]
     model.actions.append(action)
     model.current_action = len(model.actions)-1
+    update_view()
 
 
 def dirty_state():
@@ -31,7 +61,8 @@ def add_image_action(image_id):
 
 def delete_image_action():
     action = {
-        'type': 'delete_image'
+        'type': 'delete_image',
+        'data': {}
     }
     add_action(action)
 
@@ -114,14 +145,15 @@ def update_frame_action(frame_id, old_len, new_len):
             'new_len': new_len
         }
     }
-    add_action(action)
+    if old_len != new_len:
+        add_action(action)
 
 
 def delete_frame_action(frame, index, pieces):
     action = {
         'type': 'delete_frame',
         'data': {
-            'frame_id': frame,
+            'frame': frame,
             'index': index,
             'pieces': pieces
         }
@@ -131,6 +163,7 @@ def delete_frame_action(frame, index, pieces):
 
 def save_action():
     action = {
-        'type': 'save'
+        'type': 'save',
+        'data': {}
     }
     add_action(action)
