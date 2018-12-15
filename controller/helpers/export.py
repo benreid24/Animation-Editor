@@ -95,14 +95,17 @@ def save_anim(path, anim_name, frames, pieces, images):
                 rect[1] += rect[3] * piece['top_crop']
                 rect[2] *= (1 - piece['left_crop'] - piece['right_crop'])
                 rect[3] *= (1 - piece['top_crop'] - piece['bottom_crop'])
+                x = piece['x'] + piece['x_scale']*rect[2]/2 - rect[2]/2  # Peoplemon offset requirement :/
+                y = piece['y'] + piece['y_scale']*rect[3]/2 - rect[3]/2
+
                 data += _pack_field('sourceX', int(rect[0]))
                 data += _pack_field('sourceY', int(rect[1]))
                 data += _pack_field('width', int(rect[2]))
                 data += _pack_field('height', int(rect[3]))
                 data += _pack_field('scaleX', int(piece['x_scale']*100))
                 data += _pack_field('scaleY', int(piece['y_scale']*100))
-                data += _pack_field('xOff', int(piece['x']))
-                data += _pack_field('yOff', int(piece['y']))
+                data += _pack_field('xOff', int(x))
+                data += _pack_field('yOff', int(y))
                 data += _pack_field('rotation', int(piece['rotation']))
                 data += _pack_field('alpha', int(piece['alpha']))
         file.write(data)

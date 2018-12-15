@@ -1,5 +1,7 @@
 import os
 import json
+import subprocess
+import time
 
 import tkinter as tk
 from PIL import Image
@@ -16,6 +18,7 @@ from model import actions as actions_model
 from view import util as view_util
 
 current_file = None
+export_file = None
 
 
 def new_anim():
@@ -41,7 +44,11 @@ def open_anim():
         if c == tk.NO:
             return
 
-    file = view_util.get_open_anim_file()
+    folder = ''
+    if current_file is not None:
+        folder = os.path.dirname(current_file)
+
+    file = view_util.get_open_anim_file(folder)
     if file is not None and os.path.isfile(file):
         current_file = file
         images_controller.reset()
@@ -65,7 +72,11 @@ def save():
 def save_as():
     global current_file
 
-    current_file = view_util.get_save_devanim_file()
+    folder = ''
+    if current_file is not None:
+        folder = os.path.dirname(current_file)
+
+    current_file = view_util.get_save_devanim_file(folder)
     if current_file is not None:
         actions_controller.save_action()
         _save(current_file)
@@ -73,13 +84,25 @@ def save_as():
 
 def export(file=None):
     if file is None:
-        file = view_util.get_export_file()
+        global export_file
+        folder = ''
+        if export_file is not None:
+            folder = os.path.dirname(export_file)
+        file = view_util.get_export_file(folder)
 
     if file:
         base = os.path.basename(file)
         base = os.path.splitext(base)[0]
         folder = os.path.dirname(file)
         export_helper.save_anim(folder, base, frames_model.frames, pieces_model.pieces, images_model.image_list)
+
+
+def preview():
+    file = '__preview_temp{}.anim'.format(time.time())
+    export(file)
+    subprocess.call(['Previewer.exe', file])
+    os.remove(file)
+    os.remove('.'.join(file.split('.')[:-1])+'.png')
 
 
 def _images_folder_name(file):

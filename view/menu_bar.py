@@ -32,7 +32,7 @@ class MenuBar(tk.Menu):
         self.file_menu.add_command(label="Save", command=controller.save)
         self.file_menu.add_command(label="Save as", command=controller.save_as)
         self.file_menu.add_separator()
-        self.file_menu.add_command(label="Preview", command=controller.export)
+        self.file_menu.add_command(label="Preview", command=controller.preview)
         self.file_menu.add_command(label="Export", command=controller.export)
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", command=root.quit)

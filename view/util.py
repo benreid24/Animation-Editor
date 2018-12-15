@@ -24,24 +24,27 @@ def get_image_file():
     )
 
 
-def get_open_anim_file():
+def get_open_anim_file(folder=''):
     return askopenfilename(
         title='Open Animation',
-        filetypes=[('DevAnims', '*.danim')]
+        filetypes=[('DevAnims', '*.danim')],
+        initialdir=folder
     )
 
 
-def get_save_devanim_file():
+def get_save_devanim_file(folder=''):
     return asksaveasfilename(
         title='Save Animation',
         defaultextension='.danim',
-        filetypes=[('DevAnims', '*.danim')]
+        filetypes=[('DevAnims', '*.danim')],
+        initialdir=folder
     )
 
 
-def get_export_file():
+def get_export_file(folder=''):
     return asksaveasfilename(
         title='Export Animation',
         defaultextension='.anim',
-        filetypes=[('Animations', '*.anim')]
+        filetypes=[('Animations', '*.anim')],
+        initialdir=folder
     )
