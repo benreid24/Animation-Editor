@@ -5,10 +5,13 @@ from controller import frames as controller
 
 class FrameOptions(tk.LabelFrame):
     def _check(self):
-        sel = int(self.frame_list.curselection()[0])
-        if sel != self.last_selection:
-            self.last_selection = sel
-            controller.change_active_frame()
+        try:
+            sel = int(self.frame_list.curselection()[0])
+            if sel != self.last_selection:
+                self.last_selection = sel
+                controller.change_active_frame()
+        except:
+            self.set_active(controller.active_frame_index())
         self.after(100, self._check)
 
     def _entry_updated(self, _1, _2, _3):
@@ -46,6 +49,7 @@ class FrameOptions(tk.LabelFrame):
         self.frame_list.select_set(0)
         self.frame_list.pack(side=tk.LEFT, fill=tk.BOTH)
 
+        self.set_active(0)
         self.after(100, self._check)
         self.last_selection = 0
 

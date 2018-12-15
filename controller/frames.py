@@ -21,6 +21,10 @@ def reset():
     update_view()
 
 
+def active_frame_index():
+    return model.get_frame_position(model.active_frame())
+
+
 def update_view():
     i = model.get_frame_position(model.active_frame())
     if i is None:

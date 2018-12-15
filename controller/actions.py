@@ -167,3 +167,21 @@ def save_action():
         'data': {}
     }
     add_action(action)
+
+
+def batch_action(sframe, eframe, percent, xpos, ypos, xscale, yscale, alpha, rot):
+    action = {
+        'type': 'batch',
+        'data': {
+            'start_frame': sframe,
+            'end_frame': eframe,
+            'percent': percent,
+            'xpos': xpos,
+            'ypos': ypos,
+            'xscale': xscale,
+            'yscale': yscale,
+            'alpha': alpha,
+            'rot': rot
+        }
+    }
+    add_action(action)

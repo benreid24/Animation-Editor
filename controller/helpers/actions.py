@@ -6,6 +6,7 @@ from model import pieces as pieces_model
 from controller import pieces as pieces_controller
 from controller import frames as frames_controller
 from controller import images as images_controller
+from controller import batch as batch_controller
 from view import util as view_util
 
 
@@ -75,6 +76,25 @@ def undo():
         elif action['type'] == 'save':
             view_util.popup('Oh Fuck', 'Your Peoplemon game save has been deleted')
 
+        elif action['type'] == 'batch':
+            if data['percent'] == 0:
+                batch_controller.batch_shift(
+                    data['start_frame'],
+                    data['end_frame'],
+                    -data['xpos'],
+                    -data['ypos'],
+                    -data['xscale'],
+                    -data['yscale'],
+                    -data['alpha'],
+                    -data['rot']
+                )
+            else:
+                xs = (-data['xscale']) / (100 + data['xscale']) * 100
+                ys = (-data['yscale']) / (100 + data['yscale']) * 100
+                a = (-data['alpha']) / (100 + data['alpha']) * 100
+                r = (-data['rot']) / (100 + data['rot']) * 100
+                batch_controller.percent_shift(data['start_frame'], data['end_frame'], xs, ys, a, r)
+
         model.current_action -= 1
         controller.update_view()
 
@@ -143,6 +163,28 @@ def redo():
 
         elif action['type'] == 'save':
             view_util.popup('Oh Fuck', 'Your Peoplemon game save has been deleted')
+
+        elif action['type'] == 'batch':
+            if data['percent'] == 0:
+                batch_controller.batch_shift(
+                    data['start_frame'],
+                    data['end_frame'],
+                    data['xpos'],
+                    data['ypos'],
+                    data['xscale'],
+                    data['yscale'],
+                    data['alpha'],
+                    data['rot']
+                )
+            else:
+                batch_controller.percent_shift(
+                    data['start_frame'],
+                    data['end_frame'],
+                    data['xscale'],
+                    data['yscale'],
+                    data['alpha'],
+                    data['rot']
+                )
 
         model.current_action += 1
         controller.update_view()

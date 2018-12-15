@@ -25,7 +25,10 @@ VALID_TYPES = [
     'add_frame',
     'move_frame',
     'delete_frame',
-    'update_frame'
+    'update_frame',
+
+    'batch',
+    'interpolate'
 ]
 
 

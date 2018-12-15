@@ -96,11 +96,11 @@ class PieceSettings(tk.LabelFrame):
         self.ycrop_label.grid(row=5, column=1)
         self.ycrop_entry.grid(row=6, column=1)
 
-        self.wcrop_label = tk.Label(self, text='Right Width(%):')
+        self.wcrop_label = tk.Label(self, text='Right Crop(%):')
         self.wcrop_entry = tk.Entry(self)
         self.wcrop_label.grid(row=5, column=2)
         self.wcrop_entry.grid(row=6, column=2)
-        self.hcrop_label = tk.Label(self, text='Bottom Height(%):')
+        self.hcrop_label = tk.Label(self, text='Bottom Crop(%):')
         self.hcrop_entry = tk.Entry(self)
         self.hcrop_label.grid(row=5, column=3)
         self.hcrop_entry.grid(row=6, column=3)
