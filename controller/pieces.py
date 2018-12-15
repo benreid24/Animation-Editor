@@ -81,7 +81,7 @@ def remove_piece(piece_id=None):
             clear_active()
 
     elif active_piece is not None:
-        piece = model.get_piece(frames_model.active_frame(), piece_id)
+        piece = model.get_piece(frames_model.active_frame(), active_piece)
         if piece is not None:
             actions_controller.delete_piece_action(frames_model.active_frame(), piece)
         model.remove_piece(frames_model.active_frame(), active_piece)

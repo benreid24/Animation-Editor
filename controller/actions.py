@@ -71,7 +71,7 @@ def add_piece_action(frame_id, piece):
     action = {
         'type': 'add_piece',
         'data': {
-            'piece': piece,
+            'piece': dict(piece),
             'frame_id': frame_id
         }
     }
@@ -82,8 +82,8 @@ def update_piece_action(frame_id, old_piece, new_piece):
     action = {
         'type': 'update_piece',
         'data': {
-            'old': old_piece,
-            'new': new_piece,
+            'old': dict(old_piece),
+            'new': dict(new_piece),
             'frame_id': frame_id
         }
     }
@@ -106,7 +106,7 @@ def delete_piece_action(frame_id, piece):
     action = {
         'type': 'delete_piece',
         'data': {
-            'piece': piece,
+            'piece': dict(piece),
             'frame_id': frame_id
         }
     }
@@ -117,9 +117,9 @@ def add_frame_action(frame, index, pieces):
     action = {
         'type': 'add_frame',
         'data': {
-            'frame': frame,
+            'frame': dict(frame),
             'index': index,
-            'pieces': pieces
+            'pieces': list(pieces)
         }
     }
     add_action(action)
@@ -153,9 +153,9 @@ def delete_frame_action(frame, index, pieces):
     action = {
         'type': 'delete_frame',
         'data': {
-            'frame': frame,
+            'frame': dict(frame),
             'index': index,
-            'pieces': pieces
+            'pieces': list(pieces)
         }
     }
     add_action(action)

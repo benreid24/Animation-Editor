@@ -69,6 +69,7 @@ def add_from_piece(frame_id, piece):
     global next_id
     global pieces
 
+    piece = dict(piece)
     piece['id'] = next_id
     next_id += 1
     if frame_id not in pieces:
@@ -94,7 +95,8 @@ def update_piece(frame_id, piece):
     if frame_id in pieces.keys():
         for i in range(0, len(pieces[frame_id])):
             if pieces[frame_id][i]['id'] == piece['id']:
-                pieces[frame_id][i] = piece
+                pieces[frame_id][i] = dict(piece)
+                break
 
 
 def remove_piece(frame_id, piece_id):
