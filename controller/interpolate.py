@@ -56,17 +56,8 @@ def interpolate(frame, total_time, frame_len):
             d = (fi+1)/fc
             piece = dict(start_pieces[i])
             goal = end_pieces[i]
-
-            piece['x'] += (goal['x'] - piece['x']) * d
-            piece['y'] += (goal['y'] - piece['y']) * d
-            piece['x_scale'] += (goal['x_scale'] - piece['x_scale']) * d
-            piece['y_scale'] += (goal['y_scale'] - piece['y_scale']) * d
-            piece['rotation'] += (goal['rotation'] - piece['rotation']) * d
-            piece['alpha'] += (goal['alpha'] - piece['alpha']) * d
-            piece['top_crop'] += (goal['top_crop'] - piece['top_crop']) * d
-            piece['right_crop'] += (goal['right_crop'] - piece['right_crop']) * d
-            piece['bottom_crop'] += (goal['bottom_crop'] - piece['bottom_crop']) * d
-            piece['left_crop'] += (goal['left_crop'] - piece['left_crop']) * d
+            for k in filter(lambda v: v not in ['id', 'img'], piece.keys()):
+                piece[k] += (goal[k] - piece[k]) * d
             pieces.append(piece)
         frame = frames_model.get_new_frame()
         frame['length'] = frame_len
