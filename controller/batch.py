@@ -1,3 +1,5 @@
+import tkinter as tk
+
 from controller import actions as actions_controller
 from controller import pieces as pieces_controller
 from controller import frames as frames_controller
@@ -6,7 +8,7 @@ from model import pieces as pieces_model
 from view import util as view_util
 
 
-def batch_edit(start_frame, end_frame, percent, xpos, ypos, xscale, yscale, alpha, rot):
+def batch_edit(start_frame, end_frame, percent, frame_len, xpos, ypos, xscale, yscale, alpha, rot):
     if start_frame not in range(0, len(frames_model.frames)) or end_frame not in range(-1, len(frames_model.frames)):
         view_util.error('Invalid frame range')
         return
@@ -19,20 +21,35 @@ def batch_edit(start_frame, end_frame, percent, xpos, ypos, xscale, yscale, alph
         start_frame = temp
 
     if percent == 0:
-        batch_shift(start_frame, end_frame, xpos, ypos, xscale, yscale, alpha, rot)
+        if frame_len < 0:
+            view_util.error(
+                'All frames have their length set to the input length\n'
+                'This is not a shift, so it must be greater than 0'
+            )
+            return
+        if frame_len > 0:
+            res = view_util.yesnobox(
+                'WARNING: Setting all frame lengths via batch edit cannot be undo\n'
+                'Do it anyways?'
+            )
+            if res == tk.NO:
+                return
+        batch_shift(start_frame, end_frame, frame_len, xpos, ypos, xscale, yscale, alpha, rot)
     else:
-        percent_shift(start_frame, end_frame, xscale, yscale, alpha, rot)
+        percent_shift(start_frame, end_frame, frame_len, xscale, yscale, alpha, rot)
 
     actions_controller.batch_action(
-        start_frame, end_frame, percent, xpos, ypos, xscale, yscale, alpha, rot
+        start_frame, end_frame, percent, frame_len, xpos, ypos, xscale, yscale, alpha, rot
     )
 
 
-def batch_shift(start_frame, end_frame, xpos, ypos, xscale, yscale, alpha, rot):
+def batch_shift(start_frame, end_frame, frame_len, xpos, ypos, xscale, yscale, alpha, rot):
     xscale /= 100
     yscale /= 100
 
     for fi in range(start_frame, end_frame+1):
+        if frame_len > 0:
+            frames_model.frames[fi]['length'] = frame_len
         fid = frames_model.get_frame_from_pos(fi)['id']
         if fid in pieces_model.pieces.keys():
             for i in range(0, len(pieces_model.pieces[fid])):
@@ -56,13 +73,19 @@ def batch_shift(start_frame, end_frame, xpos, ypos, xscale, yscale, alpha, rot):
     frames_controller.update_view()
 
 
-def percent_shift(start_frame, end_frame, xscale, yscale, alpha, rot):
+def percent_shift(start_frame, end_frame, frame_len, xscale, yscale, alpha, rot):
+    frame_len /= 100
     xscale /= 100
     yscale /= 100
     alpha /= 100
     rot /= 100
 
     for fi in range(start_frame, end_frame+1):
+        fl = frames_model.frames[fi]['length']
+        frames_model.frames[fi]['length'] = fl+int(fl*frame_len)
+        if frames_model.frames[fi]['length'] < 5:
+            frames_model.frames[fi]['length'] = 5
+
         fid = frames_model.get_frame_from_pos(fi)['id']
         if fid in pieces_model.pieces.keys():
             for i in range(0, len(pieces_model.pieces[fid])):

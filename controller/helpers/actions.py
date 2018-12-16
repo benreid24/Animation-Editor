@@ -82,6 +82,7 @@ def undo():
                 batch_controller.batch_shift(
                     data['start_frame'],
                     data['end_frame'],
+                    0,
                     -data['xpos'],
                     -data['ypos'],
                     -data['xscale'],
@@ -94,7 +95,8 @@ def undo():
                 ys = (-data['yscale']) / (100 + data['yscale']) * 100
                 a = (-data['alpha']) / (100 + data['alpha']) * 100
                 r = (-data['rot']) / (100 + data['rot']) * 100
-                batch_controller.percent_shift(data['start_frame'], data['end_frame'], xs, ys, a, r)
+                fl = (-data['frame_len']) / (100 + data['frame_len']) * 100
+                batch_controller.percent_shift(data['start_frame'], data['end_frame'], fl, xs, ys, a, r)
 
         elif action['type'] == 'interpolate':
             s = frames_model.get_frame_position(data['start_frame'])+1
@@ -182,6 +184,7 @@ def redo():
                 batch_controller.batch_shift(
                     data['start_frame'],
                     data['end_frame'],
+                    data['frame_len'],
                     data['xpos'],
                     data['ypos'],
                     data['xscale'],
@@ -193,6 +196,7 @@ def redo():
                 batch_controller.percent_shift(
                     data['start_frame'],
                     data['end_frame'],
+                    data['frame_len'],
                     data['xscale'],
                     data['yscale'],
                     data['alpha'],
