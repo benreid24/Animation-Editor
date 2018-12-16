@@ -7,6 +7,9 @@ from .images_list import ImageList
 
 
 class AnimationEditor:
+    def _mouse_motion(self, event):
+        self.controls.actions.set_pos(event.x, event.y)
+
     def __init__(self):
         self.TK_ROOT = tk.Tk()
         self.TK_ROOT.title('Animation Editor')
@@ -16,6 +19,8 @@ class AnimationEditor:
         self.edit_canvas = EditCanvas(self.TK_ROOT)
         self.controls = Controls(self.TK_ROOT)
         self.image_list = ImageList(self.TK_ROOT)
+
+        self.edit_canvas.canvas.bind('<Motion>', self._mouse_motion)
 
         self.menu_bar.set_editor(self)
 

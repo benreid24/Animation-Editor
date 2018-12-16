@@ -18,12 +18,15 @@ class Actions(tk.LabelFrame):
     def __init__(self, master):
         tk.LabelFrame.__init__(self, master, text='Extras', padx=3, pady=3)
 
+        self.pos_label = tk.Label(self, text='Mouse Position: ()')
+        self.pos_label.grid(row=0, column=3, columnspan=1)
+
         self.undo_button = tk.Button(self, text='Undo', command=controller.undo)
         self.redo_button = tk.Button(self, text='Redo', command=controller.redo)
         self.preview_button = tk.Button(self, text='Preview', command=files_controller.preview, background='#5555ff')
         self.undo_button.grid(row=1, column=1, pady=4, padx=3)
         self.redo_button.grid(row=1, column=2, pady=4, padx=3)
-        self.preview_button.grid(row=1, column=3)
+        self.preview_button.grid(row=1, column=3, padx=60)
 
         self.action_list_frame = tk.LabelFrame(self, text='Actions')
         self.scrollbar = tk.Scrollbar(self.action_list_frame)
@@ -55,3 +58,6 @@ class Actions(tk.LabelFrame):
     def clear(self):
         self.action_list.delete(0, tk.END)
         self.last_selection = 0
+
+    def set_pos(self, x, y):
+        self.pos_label.config(text='Mouse Position: ({}, {})'.format(x, y))
