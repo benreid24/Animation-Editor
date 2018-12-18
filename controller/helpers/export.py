@@ -90,7 +90,7 @@ def save_anim(path, anim_name, frames, pieces, images):
 
             data += _pack_field('numPieces', len(pcs))
             for piece in pcs:
-                rect = list(image_rects[piece['image_id']])
+                rect = list(image_rects[int(piece['image_id'])])
                 rect[0] += rect[2] * piece['left_crop']
                 rect[1] += rect[3] * piece['top_crop']
                 rect[2] *= (1 - piece['left_crop'] - piece['right_crop'])

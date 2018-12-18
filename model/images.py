@@ -61,6 +61,7 @@ def add_image(img, file):
 
 
 def get_image(image_id):
+    image_id = int(image_id)
     if type(image_id) is int:
         if image_id in image_list.keys():
             return image_list[image_id]['img']
