@@ -45,8 +45,6 @@ class MenuBar(tk.Menu):
         self.bgnd_menu.add_command(label="Battle Template Grid", command=self._bgnd_bgrid)
         self.add_cascade(label="Background", menu=self.bgnd_menu)
 
-        root.configure(menu=self)
-
     def set_editor(self, e):
         self.editor = e
 
