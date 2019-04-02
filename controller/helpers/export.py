@@ -1,5 +1,6 @@
 import struct
 import os
+import math
 
 from PIL import Image
 
@@ -97,6 +98,18 @@ def save_anim(path, anim_name, frames, pieces, images):
                 rect[3] *= (1 - piece['top_crop'] - piece['bottom_crop'])
                 x = piece['x'] + piece['x_scale']*rect[2]/2 - rect[2]/2  # Peoplemon offset requirement :/
                 y = piece['y'] + piece['y_scale']*rect[3]/2 - rect[3]/2
+                r = (-int(piece['rotation'])) % 360  # Got it backwards, oops
+
+                if r != 0:  # Need to offset by size gained/lost when rotating
+                    w = piece['x_scale']*rect[2]/2
+                    h = piece['y_scale']*rect[3]/2
+                    t = piece['rotation']
+
+                    nw = math.fabs(w*math.sin(t*180/3.1415)) + math.fabs(h*math.cos(t*180/3.1415))
+                    nh = math.fabs(w*math.cos(t*180/3.1415)) + math.fabs(h*math.sin(t*180/3.1415))
+
+                    x += (nw - w)/2
+                    y += (nh - h)/2
 
                 data += _pack_field('sourceX', int(rect[0]))
                 data += _pack_field('sourceY', int(rect[1]))
@@ -106,7 +119,7 @@ def save_anim(path, anim_name, frames, pieces, images):
                 data += _pack_field('scaleY', int(piece['y_scale']*100))
                 data += _pack_field('xOff', int(x))
                 data += _pack_field('yOff', int(y))
-                data += _pack_field('rotation', int(piece['rotation']))
+                data += _pack_field('rotation', r)
                 data += _pack_field('alpha', int(piece['alpha']))
         file.write(data)
         sheet.save(sheet_file)

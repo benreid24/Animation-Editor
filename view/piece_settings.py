@@ -30,7 +30,7 @@ class PieceSettings(tk.LabelFrame):
             util.error('Input must be numerical')
             return
 
-        if x < 0 or y < 0 or xs <= 0 or ys <= 0 or xc < 0 or yc < 0 or wc < 0 or hc < 0:
+        if xs <= 0 or ys <= 0 or xc < 0 or yc < 0 or wc < 0 or hc < 0:
             util.error('Input must be positive')
             return
 

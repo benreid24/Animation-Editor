@@ -98,7 +98,7 @@ def export(file=None):
 
 
 def preview():
-    file = '__preview_temp{}.anim'.format(time.time())
+    file = 'tmp/__preview_temp{}.anim'.format(time.time())
     export(file)
     subprocess.call(['Previewer.exe', file])
     os.remove(file)

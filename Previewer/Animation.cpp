@@ -30,7 +30,7 @@ void AnimationSource::load(string file)
     string tempStr = File::getPath(file);
 
     file = input.getString();
-    sheet = imagePool.loadResource(file);
+    sheet = imagePool.loadResource("tmp/"+file);
     loop = bool(input.get<uint8_t>());
     int numFrames = input.get<uint16_t>();
     frames.resize(numFrames);
