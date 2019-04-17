@@ -1,3 +1,5 @@
+import math
+
 import tkinter as tk
 from PIL import ImageTk, Image
 
@@ -51,22 +53,33 @@ class EditablePiece:
     def _update_items(self):
         self.clear()
 
+        # Source and crop
         self.transformed_image = self.raw_image.crop(self._get_crop_box())
         self.transformed_image = self.transformed_image.resize(
             (int(self.transformed_image.size[0]*self.piece['x_scale']),
              int(self.transformed_image.size[1]*self.piece['y_scale']))
         )
+        ox, oy = self.transformed_image.size
+
+        # Rotation
         self.transformed_image = self.transformed_image.rotate(self.piece['rotation'], expand=True)
+        w, h = self.transformed_image.size
+
+        x = self.piece['x'] - w / 2 + ox / 2
+        y = self.piece['y'] - h / 2 + oy / 2
+
+        # Transparency
         temp_img = self.transformed_image.copy()
         temp_img.putalpha(0)
         self.transformed_image = Image.blend(self.transformed_image, temp_img, 1-self.piece['alpha']/256)
         self.img = ImageTk.PhotoImage(self.transformed_image)
         self.image_id = self.canvas.create_image(
-            self.piece['x'],
-            self.piece['y'],
+            x,
+            y,
             image=self.img,
             anchor=tk.NW
         )
+
         self.canvas.tag_bind(self.image_id, '<Button-1>', self._start_move)
         self.canvas.tag_bind(self.image_id, '<B1-Motion>', self._move_drag)
         self.canvas.tag_bind(self.image_id, '<ButtonRelease-1>', self._stop_move)
